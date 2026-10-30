@@ -103,7 +103,7 @@ def test_new_sequences_land_in_a_newer_batch(database: Path, tmp_path: Path) -> 
         connection.execute("insert into rna values (8, 'URS0000000008', 99, 'md5-8', '2026-02-01 00:00:00')")
 
     assert _load(bucket)["sequences"] == 1
-    newest = bronze_files(bucket, "rnacentral", "sequences")[0]
+    newest = bronze_files(bucket, "rnacentral", "sequences")[-1]
     import pyarrow.parquet as pq
 
     assert pq.read_table(bucket / "rnacentral" / "sequences" / newest).column("urs").to_pylist() == ["URS0000000008"]

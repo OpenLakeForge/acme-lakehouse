@@ -67,7 +67,7 @@ def test_changed_and_new_products_land_once_in_a_newer_batch(dev: FakeOpenFoodFa
     dev.upsert("new", NOW - 30)
 
     assert _load(tmp_path, resources=("products",)) == {"products": 2}
-    newest, _older = bronze_files(tmp_path, "open_food_facts", "products")
+    _older, newest = bronze_files(tmp_path, "open_food_facts", "products")
     import pyarrow.parquet as pq
 
     batch = pq.read_table(tmp_path / "open_food_facts" / "products" / newest).to_pylist()

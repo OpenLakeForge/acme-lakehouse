@@ -20,7 +20,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 import pytest
-from olf.distribution import runtime_layout
+from olf.common.distribution import runtime_layout
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
