@@ -43,7 +43,8 @@ limits are documented once, in the platform's
 | `lakehouse_code/silver/<domain>/contracts/floe/` | Floe contracts: `incremental_mode: file` with `merge_scd1`, or `overwrite` |
 | `lakehouse_code/gold/<product>/dbt/` | dbt projects with incremental `merge` models |
 | `lakehouse_code/pipelines/dagster/` | One Dagster product job per Gold product |
-| `tests/` | Offline extractor tests against a controlled HTTP server and a temporary database |
+| `synthetic/many_tables.py` | Generator of a synthetic many-table project for the platform's many-table benchmark |
+| `tests/` | Offline extractor tests against a controlled HTTP server and a temporary database, and generator tests |
 
 ## Stage bindings
 
@@ -121,6 +122,31 @@ and DEV/PROD isolation.
 
 `openlakeforge` is pinned to an exact platform commit in `pyproject.toml`
 until the load modes ship in a published release.
+
+## Synthetic many-table project
+
+Scenario C of the platform benchmark
+([OpenLakeForge/openlakeforge#328](https://github.com/OpenLakeForge/openlakeforge/issues/328))
+measures what each table costs: Floe Jobs, catalog calls, memory. It needs a
+project of about 100 tables that no external service can slow down or break.
+`synthetic/many_tables.py` writes one:
+
+```bash
+uv run python synthetic/many_tables.py --tables 100 --domains 4 --rows 1000 --output .tmp/many-tables
+```
+
+| Generated | Per domain |
+| --- | --- |
+| A CSV source `feed_NN`, loaded by the platform's CSV loader (`libs.bronze_csv`) | one |
+| Silver tables `tNNN`: an `id` key and 3 to 10 seeded columns of the reference contracts' types | `--tables / --domains` |
+| A Gold product `profile_NN` whose `mart_table_rows` counts every Silver table of the domain, and its Dagster job | one |
+
+The project has a DEV-only Slim profile, like the platform's reference
+installation. `expected.json` records each table's rows, columns and the
+SHA-256 of its CSV, and each Gold table's row count, so a benchmark can
+validate what it loaded. The same arguments always write byte-identical
+files; `--seed` (default 328) changes the data. The output directory is
+replaced on every run.
 
 ## Data terms
 

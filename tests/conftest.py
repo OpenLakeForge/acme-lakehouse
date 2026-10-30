@@ -23,6 +23,9 @@ import pytest
 from olf.common.distribution import runtime_layout
 
 ROOT = Path(__file__).resolve().parents[1]
+# olf verifies its installed payload file by file: a __pycache__ written into
+# it by importing `libs` here would make every later olf command refuse it.
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(ROOT))
 sys.path.append(str(runtime_layout({**os.environ, "OLF_DISTRIBUTION_MODE": "installed"}).distribution_root))
 
