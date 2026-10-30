@@ -1,0 +1,9 @@
+name: "nutrition_grades"
+source: { ref: "open_food_facts", resource: "nutrition_grades" }
+# A full resource: each run's file is the whole table, so it replaces it.
+sink: { write_mode: "overwrite" }
+schema:
+  primary_key: ["grade"]
+  columns:
+    - { name: "grade", type: "string", nullable: false }
+    - { name: "products", type: "int64", nullable: false }

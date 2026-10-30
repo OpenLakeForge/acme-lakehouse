@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: mart_product_scores
+    description: One row per product with its Nutri-Score, NOVA group and sugar level.
+    columns:
+      - name: code
+        tests: [unique, not_null]
+  - name: mart_nutriscore_distribution
+    description: Product count, share and average sugars per Nutri-Score grade.
+    columns:
+      - name: nutriscore_grade
+        tests: [unique, not_null]

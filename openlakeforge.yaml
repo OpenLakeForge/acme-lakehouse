@@ -1,0 +1,23 @@
+apiVersion: openlakeforge.io/v1alpha1
+kind: DeploymentProfile
+
+metadata:
+  name: acme-lakehouse
+
+spec:
+  provider:
+    type: local
+  preset: slim
+  project:
+    repository: https://github.com/OpenLakeForge/acme-lakehouse
+    image:
+      repository: ghcr.io/openlakeforge/acme-lakehouse-code
+  # DEV and PROD read different Open Food Facts servers through their own
+  # source bindings; see README.md.
+  stages:
+    dev:
+      enabled: true
+    prod:
+      enabled: true
+  access:
+    issuer: none

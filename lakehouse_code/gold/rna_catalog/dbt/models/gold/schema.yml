@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: mart_sequence_index
+    description: One row per RNAcentral sequence loaded so far, with its length band.
+    columns:
+      - name: urs
+        tests: [unique, not_null]
+  - name: mart_database_coverage
+    description: RNAcentral expert databases with their sequence and organism counts.
+    columns:
+      - name: id
+        tests: [unique, not_null]

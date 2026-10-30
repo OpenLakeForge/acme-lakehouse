@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.tmp/
+.cache/
+target/
+dbt_packages/
+logs/
+package-lock.yml

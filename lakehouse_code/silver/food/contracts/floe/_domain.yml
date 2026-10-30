@@ -1,0 +1,16 @@
+name: "food"
+# Reads only the Bronze files no earlier run read, and merges their rows on
+# the entity's primary key. An entity fed by a full resource overrides this.
+defaults:
+  incremental_mode: "file"
+  sink:
+    write_mode: "merge_scd1"
+    accepted:
+      format: "iceberg"
+      path: "food/{{entity.name}}"
+      storage: "lakehouse_silver"
+      iceberg: { catalog: "iceberg_catalog", namespace: "food_silver" }
+    rejected: { format: "csv", path: "floe/rejected/food/{{entity.name}}", storage: "lakehouse_silver" }
+  policy: { severity: "reject" }
+  schema:
+    normalize_columns: { enabled: true, strategy: "snake_case" }

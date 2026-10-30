@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: silver
+    database: "{{ env_var('OPENLAKEFORGE_CATALOG_NAME') }}"
+    schema: "{{ env_var('OPENLAKEFORGE_CATALOG_SCHEMA_PREFIX', '') }}rna_silver"
+    description: Floe-owned RNA Silver Iceberg tables.
+    tables:
+      - name: sequences
+        description: Validated RNAcentral sequences, merged on URS.
+      - name: expert_databases
+        description: Validated RNAcentral expert databases.

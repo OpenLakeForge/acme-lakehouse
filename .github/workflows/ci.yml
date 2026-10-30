@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Validate the project and test the extractors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned OpenLakeForge release and test dependencies
+        run: uv sync --locked
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Validate the project layout and descriptors
+        run: uv run olf project validate --project .
+
+      - name: Check contracts, including Bronze and Silver load modes
+        run: uv run olf check contracts --repo-root .
+
+      # Offline: a controlled HTTP server and a temporary database stand in
+      # for Open Food Facts and RNAcentral, so an outage upstream cannot fail CI.
+      - name: Test the extractors
+        run: uv run pytest

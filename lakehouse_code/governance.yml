@@ -1,0 +1,22 @@
+apiVersion: openlakeforge.io/v1beta1
+kind: Governance
+domains:
+  - name: food
+    displayName: Food
+    description: Food products and their nutrition quality, from Open Food Facts.
+    status: active
+  - name: rna
+    displayName: RNA
+    description: Non-coding RNA sequences and their source databases, from RNAcentral.
+    status: active
+products:
+  - id: food_quality
+    domain: food
+    displayName: Food Quality
+    description: Nutri-Score, NOVA and sugar level per product, and their distribution.
+    status: active
+  - id: rna_catalog
+    domain: rna
+    displayName: RNA Catalog
+    description: An index of the RNAcentral sequences loaded so far and the databases they come from.
+    status: active

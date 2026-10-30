@@ -1,0 +1,21 @@
+name: rna_catalog
+version: "1.0.0"
+config-version: 2
+
+profile: rna_catalog
+
+model-paths: ["models"]
+macro-paths: []
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  rna_catalog:
+    +database: "{{ env_var('OPENLAKEFORGE_CATALOG_NAME') }}"
+    +materialized: table
+    +on_table_exists: replace
+    +meta:
+      dagster:
+        group: rna_catalog
+    gold:
+      +tags: ["rna", "rna_catalog", "gold"]

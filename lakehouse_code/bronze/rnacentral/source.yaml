@@ -1,0 +1,18 @@
+apiVersion: openlakeforge.io/v1alpha3
+kind: Source
+name: rnacentral
+displayName: RNAcentral
+description: >-
+  The RNAcentral public PostgreSQL database of non-coding RNA sequences, read
+  with the read-only credentials RNAcentral publishes.
+status: active
+resources:
+  - name: sequences
+    description: Unique RNA sequences, extracted in id order a bounded batch per run.
+    load: { mode: incremental, cursor: id, primary_key: [urs] }
+  - name: expert_databases
+    description: The expert databases RNAcentral imports, with their sequence counts.
+    load: { mode: full }
+runtime:
+  config: [host, port, database]
+  secrets: [username, password]

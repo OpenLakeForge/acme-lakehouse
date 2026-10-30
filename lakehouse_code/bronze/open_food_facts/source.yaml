@@ -1,0 +1,17 @@
+apiVersion: openlakeforge.io/v1alpha3
+kind: Source
+name: open_food_facts
+displayName: Open Food Facts
+description: >-
+  The Open Food Facts public product database, read through its search API.
+  DEV reads the public staging server, PROD the production one.
+status: active
+resources:
+  - name: products
+    description: Food products of one country, extracted as they change.
+    load: { mode: incremental, cursor: last_modified_t, primary_key: [code] }
+  - name: nutrition_grades
+    description: Product count per Nutri-Score grade across the whole database.
+    load: { mode: full }
+runtime:
+  config: [base_url, user_agent, country]

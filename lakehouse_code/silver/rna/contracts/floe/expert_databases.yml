@@ -1,0 +1,14 @@
+name: "expert_databases"
+source: { ref: "rnacentral", resource: "expert_databases" }
+# A full resource: each run's file is the whole table, so it replaces it.
+sink: { write_mode: "overwrite" }
+schema:
+  primary_key: ["id"]
+  columns:
+    - { name: "id", type: "int64", nullable: false }
+    - { name: "name", type: "string", nullable: false }
+    - { name: "display_name", type: "string" }
+    - { name: "alive", type: "string" }
+    - { name: "num_sequences", type: "int64" }
+    - { name: "num_organisms", type: "int64" }
+    - { name: "last_import_date", type: "datetime" }

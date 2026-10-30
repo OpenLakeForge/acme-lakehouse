@@ -1,0 +1,13 @@
+# dlt lands Bronze as Parquet under <source>/<resource>/, beside its own
+# _dlt_* bookkeeping folders, which the glob leaves out.
+sources:
+  - name: "open_food_facts"
+    format: "parquet"
+    path: "open_food_facts/{{resource}}"
+    storage: "lakehouse_bronze"
+    options: { glob: "*.parquet" }
+  - name: "rnacentral"
+    format: "parquet"
+    path: "rnacentral/{{resource}}"
+    storage: "lakehouse_bronze"
+    options: { glob: "*.parquet" }

@@ -1,0 +1,42 @@
+dashboard_title: Food Quality Overview
+description: Nutri-Score distribution of the Open Food Facts products loaded so far.
+css: ''
+slug: food-quality-overview
+published: true
+uuid: 7b9d1f3a-4e6c-5d8b-a0f1-3a4b5c6d7e83
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID: { children: [GRID_ID], id: ROOT_ID, type: ROOT }
+  GRID_ID:
+    children: [ROW-FOOD-QUALITY-1]
+    id: GRID_ID
+    parents: [ROOT_ID]
+    type: GRID
+  ROW-FOOD-QUALITY-1:
+    children: [CHART-PRODUCTS-BY-NUTRISCORE]
+    id: ROW-FOOD-QUALITY-1
+    meta: { background: BACKGROUND_TRANSPARENT }
+    parents: [ROOT_ID, GRID_ID]
+    type: ROW
+  CHART-PRODUCTS-BY-NUTRISCORE:
+    children: []
+    id: CHART-PRODUCTS-BY-NUTRISCORE
+    meta:
+      chartId: 1
+      height: 50
+      sliceName: Products by Nutri-Score
+      uuid: 5a7c9e1b-2d4f-5b6a-8c0d-2e3f4a5b6c72
+      width: 12
+    parents: [ROOT_ID, GRID_ID, ROW-FOOD-QUALITY-1]
+    type: CHART
+metadata:
+  timed_refresh_immune_slices: []
+  expanded_slices: {}
+  refresh_frequency: 0
+  color_scheme: supersetColors
+  label_colors: {}
+  shared_label_colors: []
+  map_label_colors: {}
+  cross_filters_enabled: true
+  native_filter_configuration: []
+version: 1.0.0

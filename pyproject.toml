@@ -1,0 +1,42 @@
+[project]
+name = "acme-lakehouse"
+version = "0.1.0"
+description = "A customer-style OpenLakeForge project loading public food and RNA data incrementally."
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "openlakeforge",
+  "openlakeforge-domain-model",
+  # The connectors' own dependency set, as the project-code image installs it.
+  "dlt[parquet]==1.29.0",
+  "boto3",
+  "psycopg2-binary",
+  "sqlalchemy>=2",
+  "pytest>=8",
+  "ruff>=0.6",
+]
+
+[tool.uv]
+package = false
+
+# Pinned to an exact platform commit until the load modes ship in a published
+# release; then pin the PyPI version instead.
+[tool.uv.sources]
+openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "6c5b448067c988351cd6ed6a77b4d14bbeeed2f8", subdirectory = "tools/olf" }
+openlakeforge-domain-model = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "6c5b448067c988351cd6ed6a77b4d14bbeeed2f8", subdirectory = "packages/domain-model" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["conftest", "lakehouse_code", "libs"]

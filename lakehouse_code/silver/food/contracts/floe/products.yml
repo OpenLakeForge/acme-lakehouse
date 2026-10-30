@@ -1,0 +1,16 @@
+name: "products"
+source: { ref: "open_food_facts", resource: "products" }
+schema:
+  primary_key: ["code"]
+  columns:
+    - { name: "code", type: "string", nullable: false }
+    - { name: "product_name", type: "string" }
+    - { name: "brands", type: "string" }
+    - { name: "categories", type: "string" }
+    - { name: "nutriscore_grade", type: "string" }
+    - { name: "nova_group", type: "int64" }
+    - { name: "energy_kcal_100g", type: "float64" }
+    - { name: "sugars_100g", type: "float64" }
+    - { name: "salt_100g", type: "float64" }
+    - { name: "last_modified_t", type: "int64", nullable: false }
+    - { name: "last_modified_at", type: "datetime", nullable: false }

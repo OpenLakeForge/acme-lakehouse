@@ -1,0 +1,10 @@
+name: "sequences"
+source: { ref: "rnacentral", resource: "sequences" }
+schema:
+  primary_key: ["urs"]
+  columns:
+    - { name: "id", type: "int64", nullable: false }
+    - { name: "urs", type: "string", nullable: false }
+    - { name: "length", type: "int64" }
+    - { name: "md5", type: "string" }
+    - { name: "created_at", type: "datetime" }

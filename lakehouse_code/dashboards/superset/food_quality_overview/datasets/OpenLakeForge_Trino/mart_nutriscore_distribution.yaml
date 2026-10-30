@@ -1,0 +1,29 @@
+table_name: mart_nutriscore_distribution
+main_dttm_col: null
+description: Product count, share and average sugars per Nutri-Score grade.
+schema: food_quality_gold
+uuid: 3f6b1d2a-7c4e-5a8b-9d0e-1f2a3b4c5d61
+metrics:
+  - metric_name: sum__products
+    verbose_name: Products
+    metric_type: sum
+    expression: SUM(products)
+columns:
+  - column_name: nutriscore_grade
+    type: VARCHAR
+    groupby: true
+    filterable: true
+  - column_name: products
+    type: BIGINT
+    groupby: false
+    filterable: true
+  - column_name: share_pct
+    type: DOUBLE
+    groupby: false
+    filterable: true
+  - column_name: avg_sugars_100g
+    type: DOUBLE
+    groupby: false
+    filterable: true
+version: 1.0.0
+database_uuid: 8a87434c-559e-545d-badd-3575affe0185

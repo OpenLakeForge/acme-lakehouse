@@ -1,0 +1,21 @@
+name: food_quality
+version: "1.0.0"
+config-version: 2
+
+profile: food_quality
+
+model-paths: ["models"]
+macro-paths: []
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  food_quality:
+    +database: "{{ env_var('OPENLAKEFORGE_CATALOG_NAME') }}"
+    +materialized: table
+    +on_table_exists: replace
+    +meta:
+      dagster:
+        group: food_quality
+    gold:
+      +tags: ["food", "food_quality", "gold"]
