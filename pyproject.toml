@@ -29,7 +29,7 @@ openlakeforge-domain-model = { git = "https://github.com/OpenLakeForge/openlakef
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["tests", "synthetic"]
+pythonpath = ["tests"]
 
 [tool.ruff]
 line-length = 120
@@ -39,4 +39,4 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["conftest", "lakehouse_code", "libs", "many_tables"]
+known-first-party = ["conftest", "lakehouse_code", "libs"]
