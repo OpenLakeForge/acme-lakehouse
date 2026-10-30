@@ -25,8 +25,8 @@ dev = [
 dev = [
     { name = "boto3" },
     { name = "dlt", extras = ["parquet"], specifier = "==1.29.0" },
-    { name = "openlakeforge", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=6176ff036a6e2675707a88c5c602a31e409cf1d2" },
-    { name = "openlakeforge-domain-model", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=6176ff036a6e2675707a88c5c602a31e409cf1d2" },
+    { name = "openlakeforge", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=3e55473d613353b7af1776fd9f833cfcf45b9952" },
+    { name = "openlakeforge-domain-model", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=3e55473d613353b7af1776fd9f833cfcf45b9952" },
     { name = "psycopg2-binary" },
     { name = "pytest", specifier = ">=8" },
     { name = "ruff", specifier = ">=0.6" },
@@ -523,7 +523,7 @@ wheels = [
 [[package]]
 name = "openlakeforge"
 version = "0.5.0a1"
-source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=6176ff036a6e2675707a88c5c602a31e409cf1d2#6176ff036a6e2675707a88c5c602a31e409cf1d2" }
+source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=3e55473d613353b7af1776fd9f833cfcf45b9952#3e55473d613353b7af1776fd9f833cfcf45b9952" }
 dependencies = [
     { name = "azure-identity" },
     { name = "azure-mgmt-containerservice" },
@@ -541,7 +541,7 @@ dependencies = [
 [[package]]
 name = "openlakeforge-domain-model"
 version = "0.5.0a1"
-source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=6176ff036a6e2675707a88c5c602a31e409cf1d2#6176ff036a6e2675707a88c5c602a31e409cf1d2" }
+source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=3e55473d613353b7af1776fd9f833cfcf45b9952#3e55473d613353b7af1776fd9f833cfcf45b9952" }
 dependencies = [
     { name = "pyyaml" },
 ]

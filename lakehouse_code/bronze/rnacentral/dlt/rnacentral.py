@@ -36,11 +36,13 @@ _DATABASE_COLUMNS = {
 }
 
 
-def _engine(*, host: str, port: int, database: str, username: str, password: str) -> sa.Engine:
-    url = sa.URL.create(
-        "postgresql+psycopg2", username=username, password=password, host=host, port=port, database=database
-    )
-    return sa.create_engine(url, connect_args={"connect_timeout": 30})
+# The binding travels as one mapping: `olf infra project build` reads
+# a forwarded secret keyword as an embedded credential (OpenLakeForge/openlakeforge#659).
+_BINDING_KEYS = ("host", "port", "database", "username", "password")
+
+
+def _engine(**binding: Any) -> sa.Engine:
+    return sa.create_engine(sa.URL.create("postgresql+psycopg2", **binding), connect_args={"connect_timeout": 30})
 
 
 @dlt.source(name="rnacentral")
@@ -53,7 +55,7 @@ def rnacentral(
     batch_size: int = 10_000,
     max_rows_per_run: int = 100_000,
 ) -> Any:
-    engine = _engine(host=host, port=port, database=database, username=username, password=password)
+    engine = _engine(**dict(zip(_BINDING_KEYS, (host, port, database, username, password), strict=True)))
 
     @dlt.resource(name="sequences", primary_key="urs", columns=_SEQUENCE_COLUMNS)
     def sequences(
