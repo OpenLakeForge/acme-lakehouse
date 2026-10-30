@@ -134,7 +134,9 @@ This repository contains code only, no extracted data.
 
 ## Not yet verified
 
-- A live run on the local kind stack: extraction, Floe merge and dbt
-  incremental runs against the real services.
+- A live run on the local kind stack: Dagster and dbt incremental runs
+  against the real services. The Open Food Facts extraction and the Floe
+  `merge_scd1` runs, catch-up, no-change, incremental and full refresh, were
+  checked once against Polaris and SeaweedFS outside kind, with Floe 0.8.6.
 - Scan statistics showing that an incremental Gold run reads only new Silver
   data ([#344](https://github.com/OpenLakeForge/openlakeforge/issues/344)).
