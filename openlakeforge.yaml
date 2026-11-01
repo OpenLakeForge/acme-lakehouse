@@ -14,10 +14,16 @@ spec:
       repository: ghcr.io/openlakeforge/acme-lakehouse-code
   # DEV and PROD read different Open Food Facts servers through their own
   # source bindings; see README.md.
+  # Run pods reach the sources' hosts on these ports only: Open Food Facts
+  # over HTTPS, RNAcentral's public PostgreSQL.
   stages:
     dev:
       enabled: true
+      source_egress:
+        ports: [443, 5432]
     prod:
       enabled: true
+      source_egress:
+        ports: [443, 5432]
   access:
     issuer: none
