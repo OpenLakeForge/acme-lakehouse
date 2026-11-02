@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Iterator, Sequence
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from typing import Any
 
 import dlt
@@ -47,6 +47,10 @@ _PRODUCT_COLUMNS = {
 }
 
 
+# The cursor before any load: every product's `last_modified_t` is later.
+_NO_CURSOR = 0
+
+
 class CursorNotReached(RuntimeError):
     """The page budget ran out before the products reached the cursor."""
 
@@ -56,21 +60,21 @@ def open_food_facts(
     base_url: str = dlt.config.value,
     user_agent: str = dlt.config.value,
     country: str = dlt.config.value,
-    initial_lookback_days: int = 3,
     page_size: int = 100,
-    max_pages: int = 30,
+    # Both servers refuse anonymous search pages past the tenth (401 on
+    # staging, 503 on production), so a budget above 10 cannot be spent.
+    max_pages: int = 10,
     # The API guide allows 10 search requests a minute per client.
     request_interval_seconds: float = 6.0,
 ) -> Any:
     base = base_url.rstrip("/")
     headers = {"User-Agent": user_agent}
-    initial = int((datetime.now(UTC) - timedelta(days=initial_lookback_days)).timestamp())
 
     @dlt.resource(name="products", primary_key="code", columns=_PRODUCT_COLUMNS)
     def products(
         # dlt reads the cursor from this default argument; it is dlt's own idiom.
         last_modified_t: Any = dlt.sources.incremental(  # noqa: B008
-            "last_modified_t", initial_value=initial, row_order="desc"
+            "last_modified_t", initial_value=_NO_CURSOR, row_order="desc"
         ),
     ) -> Iterator[list[dict[str, Any]]]:
         seen: set[str] = set()
@@ -98,6 +102,11 @@ def open_food_facts(
                 yield rows
             if len(found) < page_size or found[-1].get("last_modified_t", 0) <= last_modified_t.start_value:
                 return
+        if last_modified_t.start_value == _NO_CURSOR:
+            # A first run, or one after a full refresh, takes the newest
+            # products the budget allows: a time window could come back empty
+            # while the source is quiet, and Bronze would then hold nothing.
+            return
         # Stopping here would move the cursor past products not yet read, and
         # no later run would read them. Fail instead, so the cursor stays put.
         raise CursorNotReached(

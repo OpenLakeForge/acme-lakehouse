@@ -25,8 +25,8 @@ dev = [
 dev = [
     { name = "boto3" },
     { name = "dlt", extras = ["parquet"], specifier = "==1.29.0" },
-    { name = "openlakeforge", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=d66e7a7acf314a904bfe9a1b38f85be9538cafac" },
-    { name = "openlakeforge-domain-model", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=d66e7a7acf314a904bfe9a1b38f85be9538cafac" },
+    { name = "openlakeforge", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d" },
+    { name = "openlakeforge-domain-model", git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d" },
     { name = "psycopg2-binary" },
     { name = "pytest", specifier = ">=8" },
     { name = "ruff", specifier = ">=0.6" },
@@ -522,8 +522,8 @@ wheels = [
 
 [[package]]
 name = "openlakeforge"
-version = "0.5.0a1"
-source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=d66e7a7acf314a904bfe9a1b38f85be9538cafac#d66e7a7acf314a904bfe9a1b38f85be9538cafac" }
+version = "0.5.1a1"
+source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=tools%2Folf&rev=ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d#ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d" }
 dependencies = [
     { name = "azure-identity" },
     { name = "azure-mgmt-containerservice" },
@@ -541,16 +541,16 @@ dependencies = [
 
 [[package]]
 name = "openlakeforge-domain-model"
-version = "0.5.0a1"
-source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=d66e7a7acf314a904bfe9a1b38f85be9538cafac#d66e7a7acf314a904bfe9a1b38f85be9538cafac" }
+version = "0.5.1a1"
+source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Fdomain-model&rev=ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d#ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d" }
 dependencies = [
     { name = "pyyaml" },
 ]
 
 [[package]]
 name = "openlakeforge-lakehouse-services"
-version = "0.5.0a1"
-source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Flakehouse-services&rev=d66e7a7acf314a904bfe9a1b38f85be9538cafac#d66e7a7acf314a904bfe9a1b38f85be9538cafac" }
+version = "0.5.1a1"
+source = { git = "https://github.com/OpenLakeForge/openlakeforge?subdirectory=packages%2Flakehouse-services&rev=ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d#ca0835a6e77f43a39e66ebeb703fe1bdb7ffa86d" }
 dependencies = [
     { name = "openlakeforge-domain-model" },
     { name = "pyyaml" },

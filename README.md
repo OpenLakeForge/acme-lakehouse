@@ -24,7 +24,9 @@ a full rebuild says why in its SQL.
 - **Open Food Facts.** The search API cannot filter on modification time, but
   it can sort on it. The connector reads one country's products newest first
   and stops at the cursor. If its page budget runs out first, the run fails
-  and the cursor does not move, so no product is skipped.
+  and the cursor does not move, so no product is skipped. With no cursor yet,
+  on the first run or after a full refresh, it backfills the newest products
+  the page budget allows, so a quiet source still loads.
 - **RNAcentral.** The connector reads `rna` in `id` order, at most
   `max_rows_per_run` rows a run, so the first runs backfill the table one slice
   at a time. A killed run is retried from the last loaded id.

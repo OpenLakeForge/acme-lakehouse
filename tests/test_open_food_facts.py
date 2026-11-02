@@ -41,14 +41,23 @@ def dev(off_servers, stage_env) -> FakeOpenFoodFacts:
     stage_env("dev", _bindings(api))
     for index in range(5):
         api.upsert(f"p{index}", NOW - 3600 * (index + 1), nutriscore_grade="b")
-    # Older than the first run's lookback: never extracted incrementally.
+    # Far older than the rest: the first run backfills it all the same.
     api.upsert("ancient", NOW - 30 * 86400)
     return api
 
 
-def test_the_first_run_extracts_the_lookback_window(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:
-    assert _load(tmp_path) == {"products": 5, "nutrition_grades": 2}
-    assert {row["code"] for row in bronze_rows(tmp_path, "open_food_facts", "products")} == {f"p{i}" for i in range(5)}
+def test_the_first_run_backfills_the_newest_products(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:
+    assert _load(tmp_path) == {"products": 6, "nutrition_grades": 2}
+    codes = {row["code"] for row in bronze_rows(tmp_path, "open_food_facts", "products")}
+    assert codes == {f"p{i}" for i in range(5)} | {"ancient"}
+
+
+def test_a_first_run_stops_at_the_page_budget_instead_of_failing(dev, stage_env, tmp_path) -> None:
+    """With no cursor there is nothing to skip past: the newest pages are the backfill."""
+    stage_env("dev", _bindings(dev, max_pages=2))
+
+    assert _load(tmp_path, resources=("products",)) == {"products": 4}
+    assert {row["code"] for row in bronze_rows(tmp_path, "open_food_facts", "products")} == {f"p{i}" for i in range(4)}
 
 
 def test_a_run_with_no_change_writes_nothing_and_reads_one_page(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:
@@ -105,15 +114,17 @@ def test_dev_and_prod_read_their_own_server_and_keep_their_own_cursor(off_server
     assert [row["code"] for row in bronze_rows(buckets["dev"], "open_food_facts", "products")] == ["staging_only"]
 
 
-def test_a_full_refresh_reloads_products_from_the_lookback_window(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:
+def test_a_full_refresh_backfills_again_even_when_nothing_changed_recently(
+    dev: FakeOpenFoodFacts, tmp_path: Path
+) -> None:
     _load(tmp_path)
     dev.upsert("p0", NOW - 10, nutriscore_grade="e")
     _load(tmp_path, resources=("products",))
 
-    assert _load(tmp_path, full_refresh=True, resources=("products",)) == {"products": 5}
+    assert _load(tmp_path, full_refresh=True, resources=("products",)) == {"products": 6}
     rows = bronze_rows(tmp_path, "open_food_facts", "products")
     assert len(bronze_files(tmp_path, "open_food_facts", "products")) == 1
-    assert sorted(row["code"] for row in rows) == [f"p{i}" for i in range(5)]
+    assert sorted(row["code"] for row in rows) == ["ancient", *[f"p{i}" for i in range(5)]]
 
 
 def test_nutrition_grades_replace_their_files_on_every_run(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:
