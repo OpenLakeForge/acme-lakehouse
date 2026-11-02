@@ -16,6 +16,7 @@ import sqlalchemy as sa
 import dlt
 from libs.bronze_csv import BronzeLoadResult
 from libs.bronze_dlt import load_dlt_source
+from libs.bronze_incremental import keyset_batches, sql_engine
 
 _SEQUENCE_COLUMNS = {
     "id": {"data_type": "bigint", "nullable": False},
@@ -36,11 +37,8 @@ _DATABASE_COLUMNS = {
 }
 
 
-def _engine(*, host: str, port: int, database: str, username: str, password: str) -> sa.Engine:
-    url = sa.URL.create(
-        "postgresql+psycopg2", username=username, password=password, host=host, port=port, database=database
-    )
-    return sa.create_engine(url, connect_args={"connect_timeout": 30})
+def _engine(binding: dict[str, Any]) -> sa.Engine:
+    return sql_engine("postgresql+psycopg2", binding, connect_args={"connect_timeout": 30})
 
 
 @dlt.source(name="rnacentral")
@@ -53,26 +51,21 @@ def rnacentral(
     batch_size: int = 10_000,
     max_rows_per_run: int = 100_000,
 ) -> Any:
-    engine = _engine(host=host, port=port, database=database, username=username, password=password)
+    engine = _engine({"host": host, "port": port, "database": database, "username": username, "password": password})
 
     @dlt.resource(name="sequences", primary_key="urs", columns=_SEQUENCE_COLUMNS)
     def sequences(
         # dlt reads the cursor from this default argument; it is dlt's own idiom.
         id: Any = dlt.sources.incremental("id", initial_value=0),  # noqa: A002, B008
     ) -> Iterator[list[dict[str, Any]]]:
-        last, loaded = id.start_value, 0
         query = sa.text(
             "select id, urs, len as length, md5, timestamp as created_at "
             "from rna where id > :last order by id limit :limit"
         )
         with engine.connect() as connection:
-            while loaded < max_rows_per_run:
-                limit = min(batch_size, max_rows_per_run - loaded)
-                rows = [dict(row) for row in connection.execute(query, {"last": last, "limit": limit}).mappings()]
-                if not rows:
-                    return
-                yield rows
-                last, loaded = rows[-1]["id"], loaded + len(rows)
+            yield from keyset_batches(
+                connection, query, id, cursor_field="id", batch_size=batch_size, max_rows=max_rows_per_run
+            )
 
     @dlt.resource(name="expert_databases", primary_key="id", columns=_DATABASE_COLUMNS)
     def expert_databases() -> Iterator[list[dict[str, Any]]]:
