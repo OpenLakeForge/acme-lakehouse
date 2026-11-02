@@ -86,7 +86,5 @@ def rnacentral(
     return sequences, expert_databases
 
 
-def load_rnacentral_entities_to_bronze(
-    resources: Sequence[str], *, full_refresh: bool = False
-) -> dict[str, BronzeLoadResult]:
-    return load_dlt_source("rnacentral", rnacentral(), resources, full_refresh=full_refresh)
+def load_rnacentral_entities_to_bronze(resources: Sequence[str]) -> dict[str, BronzeLoadResult]:
+    return load_dlt_source("rnacentral", rnacentral(), resources)
