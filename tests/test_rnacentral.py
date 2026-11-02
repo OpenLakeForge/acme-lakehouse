@@ -17,7 +17,7 @@ def connections(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
     """What the source asked to connect to, with the database swapped for SQLite."""
     seen: list[dict] = []
 
-    def engine(**binding: object) -> sa.Engine:
+    def engine(binding: dict) -> sa.Engine:
         seen.append(binding)
         return sa.create_engine(f"sqlite:///{binding['database']}")
 

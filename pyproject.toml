@@ -24,8 +24,8 @@ package = false
 # Pinned to an exact platform commit until the load modes ship in a published
 # release; then pin the PyPI version instead.
 [tool.uv.sources]
-openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "a5323a8426b4b2a5cb997acc30507238cfc5766c", subdirectory = "tools/olf" }
-openlakeforge-domain-model = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "a5323a8426b4b2a5cb997acc30507238cfc5766c", subdirectory = "packages/domain-model" }
+openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "f03586bc704c460e897130054ca283d7e9ec7d2e", subdirectory = "tools/olf" }
+openlakeforge-domain-model = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "f03586bc704c460e897130054ca283d7e9ec7d2e", subdirectory = "packages/domain-model" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

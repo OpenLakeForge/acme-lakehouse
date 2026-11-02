@@ -8,7 +8,6 @@ cursor. The stage binds `base_url`: DEV reads the staging server
 
 from __future__ import annotations
 
-import time
 from collections.abc import Iterator, Sequence
 from datetime import UTC, datetime
 from typing import Any
@@ -17,6 +16,7 @@ import dlt
 from dlt.sources.helpers import requests
 from libs.bronze_csv import BronzeLoadResult
 from libs.bronze_dlt import load_dlt_source
+from libs.bronze_incremental import newest_first_pages
 
 _PRODUCT_FIELDS = (
     "code",
@@ -47,14 +47,6 @@ _PRODUCT_COLUMNS = {
 }
 
 
-# The cursor before any load: every product's `last_modified_t` is later.
-_NO_CURSOR = 0
-
-
-class CursorNotReached(RuntimeError):
-    """The page budget ran out before the products reached the cursor."""
-
-
 @dlt.source(name="open_food_facts")
 def open_food_facts(
     base_url: str = dlt.config.value,
@@ -74,13 +66,10 @@ def open_food_facts(
     def products(
         # dlt reads the cursor from this default argument; it is dlt's own idiom.
         last_modified_t: Any = dlt.sources.incremental(  # noqa: B008
-            "last_modified_t", initial_value=_NO_CURSOR, row_order="desc"
+            "last_modified_t", initial_value=0, row_order="desc"
         ),
     ) -> Iterator[list[dict[str, Any]]]:
-        seen: set[str] = set()
-        for page in range(1, max_pages + 1):
-            if page > 1:
-                time.sleep(request_interval_seconds)
+        def page(number: int) -> list[dict[str, Any]]:
             response = requests.get(
                 f"{base}/api/v2/search",
                 params={
@@ -88,31 +77,23 @@ def open_food_facts(
                     "sort_by": "last_modified_t",
                     "fields": ",".join(_PRODUCT_FIELDS),
                     "page_size": page_size,
-                    "page": page,
+                    "page": number,
                 },
                 headers=headers,
             )
             response.raise_for_status()
-            found = response.json().get("products") or []
-            # A product edited while we page moves to page 1 and shifts the
-            # rest down one, so it can be read twice; the first read is newer.
-            rows = [_product_row(product) for product in found if product.get("code") not in seen]
-            seen.update(row["code"] for row in rows)
-            if rows:
-                yield rows
-            if len(found) < page_size or found[-1].get("last_modified_t", 0) <= last_modified_t.start_value:
-                return
-        if last_modified_t.start_value == _NO_CURSOR:
-            # A first run takes the newest products the budget allows: a
-            # time window could come back empty while the source is quiet,
-            # and Bronze would then hold nothing.
-            return
-        # Stopping here would move the cursor past products not yet read, and
-        # no later run would read them. Fail instead, so the cursor stays put.
-        raise CursorNotReached(
-            f"{max_pages} pages of {page_size} products did not reach the cursor "
-            f"{last_modified_t.start_value}; raise max_pages or narrow the country"
-        )
+            return response.json().get("products") or []
+
+        for found in newest_first_pages(
+            page,
+            last_modified_t,
+            cursor_field="last_modified_t",
+            key="code",
+            page_size=page_size,
+            max_pages=max_pages,
+            interval_seconds=request_interval_seconds,
+        ):
+            yield [_product_row(product) for product in found]
 
     @dlt.resource(name="nutrition_grades", primary_key="grade")
     def nutrition_grades() -> Iterator[list[dict[str, Any]]]:
