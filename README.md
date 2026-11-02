@@ -24,8 +24,8 @@ a full rebuild says why in its SQL.
 - **Open Food Facts.** The search API cannot filter on modification time, but
   it can sort on it. The connector reads one country's products newest first
   and stops at the cursor. If its page budget runs out first, the run fails
-  and the cursor does not move, so no product is skipped. With no cursor yet,
-  on the first run or after a full refresh, it backfills the newest products
+  and the cursor does not move, so no product is skipped. On its first run,
+  with no cursor yet, it backfills the newest products
   the page budget allows, so a quiet source still loads.
 - **RNAcentral.** The connector reads `rna` in `id` order, at most
   `max_rows_per_run` rows a run, so the first runs backfill the table one slice
@@ -118,7 +118,7 @@ uv run olf check contracts --repo-root .
 The tests run each connector through the platform's own Bronze loader
 (`libs.bronze_dlt`, from the pinned OpenLakeForge distribution) against
 controlled servers. They need no network. They cover the first load, a run
-with no change, changed rows, a killed run, a full refresh, the page budget,
+with no change, changed rows, a killed run, the page budget,
 and DEV/PROD isolation.
 
 `openlakeforge` is pinned to an exact platform commit in `pyproject.toml`

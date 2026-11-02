@@ -103,9 +103,9 @@ def open_food_facts(
             if len(found) < page_size or found[-1].get("last_modified_t", 0) <= last_modified_t.start_value:
                 return
         if last_modified_t.start_value == _NO_CURSOR:
-            # A first run, or one after a full refresh, takes the newest
-            # products the budget allows: a time window could come back empty
-            # while the source is quiet, and Bronze would then hold nothing.
+            # A first run takes the newest products the budget allows: a
+            # time window could come back empty while the source is quiet,
+            # and Bronze would then hold nothing.
             return
         # Stopping here would move the cursor past products not yet read, and
         # no later run would read them. Fail instead, so the cursor stays put.
@@ -150,7 +150,5 @@ def _product_row(product: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def load_open_food_facts_entities_to_bronze(
-    resources: Sequence[str], *, full_refresh: bool = False
-) -> dict[str, BronzeLoadResult]:
-    return load_dlt_source("open_food_facts", open_food_facts(), resources, full_refresh=full_refresh)
+def load_open_food_facts_entities_to_bronze(resources: Sequence[str]) -> dict[str, BronzeLoadResult]:
+    return load_dlt_source("open_food_facts", open_food_facts(), resources)

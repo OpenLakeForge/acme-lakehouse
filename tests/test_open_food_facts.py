@@ -23,12 +23,11 @@ def _bindings(api: FakeOpenFoodFacts, *, page_size: int = 2, max_pages: int = 10
     }
 
 
-def _load(bucket: Path, *, full_refresh: bool = False, resources=("products", "nutrition_grades")) -> dict[str, int]:
+def _load(bucket: Path, *, resources=("products", "nutrition_grades")) -> dict[str, int]:
     results = load_dlt_source(
         "open_food_facts",
         open_food_facts(),
         resources,
-        full_refresh=full_refresh,
         bucket_url=bucket.as_uri(),
         lakehouse_root=LAKEHOUSE_CODE,
     )
@@ -112,19 +111,6 @@ def test_dev_and_prod_read_their_own_server_and_keep_their_own_cursor(off_server
     assert _load(buckets["prod"], resources=("products",)) == {"products": 0}
     assert [row["code"] for row in bronze_rows(buckets["prod"], "open_food_facts", "products")] == ["production_only"]
     assert [row["code"] for row in bronze_rows(buckets["dev"], "open_food_facts", "products")] == ["staging_only"]
-
-
-def test_a_full_refresh_backfills_again_even_when_nothing_changed_recently(
-    dev: FakeOpenFoodFacts, tmp_path: Path
-) -> None:
-    _load(tmp_path)
-    dev.upsert("p0", NOW - 10, nutriscore_grade="e")
-    _load(tmp_path, resources=("products",))
-
-    assert _load(tmp_path, full_refresh=True, resources=("products",)) == {"products": 6}
-    rows = bronze_rows(tmp_path, "open_food_facts", "products")
-    assert len(bronze_files(tmp_path, "open_food_facts", "products")) == 1
-    assert sorted(row["code"] for row in rows) == ["ancient", *[f"p{i}" for i in range(5)]]
 
 
 def test_nutrition_grades_replace_their_files_on_every_run(dev: FakeOpenFoodFacts, tmp_path: Path) -> None:

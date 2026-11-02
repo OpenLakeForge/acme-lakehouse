@@ -55,12 +55,11 @@ def database(tmp_path: Path, stage_env, connections) -> Path:
     return path
 
 
-def _load(bucket: Path, source=None, *, full_refresh: bool = False, resources=("sequences",)) -> dict[str, int]:
+def _load(bucket: Path, source=None, *, resources=("sequences",)) -> dict[str, int]:
     results = load_dlt_source(
         "rnacentral",
         source or rnacentral(),
         resources,
-        full_refresh=full_refresh,
         bucket_url=bucket.as_uri(),
         lakehouse_root=LAKEHOUSE_CODE,
     )
@@ -107,14 +106,6 @@ def test_new_sequences_land_in_a_newer_batch(database: Path, tmp_path: Path) -> 
     import pyarrow.parquet as pq
 
     assert pq.read_table(bucket / "rnacentral" / "sequences" / newest).column("urs").to_pylist() == ["URS0000000008"]
-
-
-def test_a_full_refresh_restarts_the_backfill(database: Path, tmp_path: Path) -> None:
-    bucket = tmp_path / "bronze"
-    _load(bucket), _load(bucket)
-
-    assert _load(bucket, full_refresh=True)["sequences"] == 4
-    assert sorted(row["id"] for row in bronze_rows(bucket, "rnacentral", "sequences")) == [1, 2, 3, 4]
 
 
 def test_expert_databases_replace_their_files_on_every_run(database: Path, tmp_path: Path) -> None:
