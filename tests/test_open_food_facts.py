@@ -4,10 +4,10 @@ import time
 from pathlib import Path
 
 import pytest
+from openlakeforge_runtime.bronze_dlt import load_dlt_source
 
 from conftest import LAKEHOUSE_CODE, FakeOpenFoodFacts, bronze_files, bronze_rows
 from lakehouse_code.bronze.open_food_facts.dlt.open_food_facts import open_food_facts
-from libs.bronze_dlt import load_dlt_source
 
 NOW = int(time.time())
 

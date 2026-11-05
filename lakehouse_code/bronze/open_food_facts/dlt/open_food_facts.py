@@ -12,11 +12,12 @@ from collections.abc import Iterator, Sequence
 from datetime import UTC, datetime
 from typing import Any
 
+from openlakeforge_runtime.bronze_csv import BronzeLoadResult
+from openlakeforge_runtime.bronze_dlt import load_dlt_source
+from openlakeforge_runtime.bronze_incremental import newest_first_pages
+
 import dlt
 from dlt.sources.helpers import requests
-from libs.bronze_csv import BronzeLoadResult
-from libs.bronze_dlt import load_dlt_source
-from libs.bronze_incremental import newest_first_pages
 
 _PRODUCT_FIELDS = (
     "code",

@@ -12,11 +12,11 @@ from collections.abc import Iterator, Sequence
 from typing import Any
 
 import sqlalchemy as sa
+from openlakeforge_runtime.bronze_csv import BronzeLoadResult
+from openlakeforge_runtime.bronze_dlt import load_dlt_source
+from openlakeforge_runtime.bronze_incremental import keyset_batches, sql_engine
 
 import dlt
-from libs.bronze_csv import BronzeLoadResult
-from libs.bronze_dlt import load_dlt_source
-from libs.bronze_incremental import keyset_batches, sql_engine
 
 _SEQUENCE_COLUMNS = {
     "id": {"data_type": "bigint", "nullable": False},

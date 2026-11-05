@@ -8,7 +8,8 @@ dependencies = []
 [dependency-groups]
 dev = [
   "openlakeforge",
-  "openlakeforge-domain-model",
+  "openlakeforge-core",
+  "openlakeforge-runtime",
   # The connectors' own dependency set, as the project-code image installs it.
   "dlt[parquet]==1.29.0",
   "boto3",
@@ -21,15 +22,16 @@ dev = [
 [tool.uv]
 package = false
 
-# Pinned to an exact platform commit until the load modes ship in a published
-# release; then pin the PyPI version instead.
+# Pinned to an exact platform commit until openlakeforge-runtime ships in a
+# published release; then pin the PyPI versions instead. Keep the three revs equal.
 [tool.uv.sources]
-openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "f03586bc704c460e897130054ca283d7e9ec7d2e", subdirectory = "tools/olf" }
-openlakeforge-domain-model = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "f03586bc704c460e897130054ca283d7e9ec7d2e", subdirectory = "packages/domain-model" }
+openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "4ad86a062eb0b1eaed5634b56f63d496f25eac27", subdirectory = "tools/olf" }
+openlakeforge-core = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "4ad86a062eb0b1eaed5634b56f63d496f25eac27", subdirectory = "packages/core" }
+openlakeforge-runtime = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "4ad86a062eb0b1eaed5634b56f63d496f25eac27", subdirectory = "packages/runtime" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["tests"]
+pythonpath = [".", "tests"]
 
 [tool.ruff]
 line-length = 120
@@ -39,4 +41,4 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["conftest", "lakehouse_code", "libs"]
+known-first-party = ["conftest", "lakehouse_code"]

@@ -1,0 +1,7 @@
+# Python packages lakehouse_code needs on top of the platform's pins
+# (images/project-code/requirements.lock in OpenLakeForge). The image installs
+# this file constrained to those pins, so a range here never moves one.
+
+# The rnacentral connector's PostgreSQL driver (`postgresql+psycopg2`). The
+# platform lock carries it only as a dependency of dagster-postgres.
+psycopg2-binary>=2.9,<3
