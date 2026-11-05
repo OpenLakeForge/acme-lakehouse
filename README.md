@@ -53,32 +53,46 @@ Endpoints and credentials are not part of the code: each stage binds them in
 its own namespace, and the same revision runs in DEV and PROD unchanged. DEV
 reads the Open Food Facts staging server, PROD the production one.
 
-```bash
-kubectl -n olf-dev create configmap olf-source-open-food-facts \
-  --from-literal=base_url=https://world.openfoodfacts.net \
-  --from-literal=user_agent="acme-lakehouse/0.1 (+https://github.com/OpenLakeForge/acme-lakehouse)" \
-  --from-literal=country=belgium
-```
+`olf` writes each stage's bindings from the keys `runtime` declares in each
+`source.yaml`, and refuses an unknown or missing key. For DEV:
 
 ```bash
-kubectl -n olf-prod create configmap olf-source-open-food-facts \
-  --from-literal=base_url=https://world.openfoodfacts.org \
-  --from-literal=user_agent="acme-lakehouse/0.1 (+https://github.com/OpenLakeForge/acme-lakehouse)" \
-  --from-literal=country=belgium
+uv run olf infra source bind open_food_facts --stage dev -f openlakeforge.yaml \
+  --set base_url=https://world.openfoodfacts.net \
+  --set user_agent="acme-lakehouse/0.1 (+https://github.com/OpenLakeForge/acme-lakehouse)" \
+  --set country=belgium
+```
+
+For PROD:
+
+```bash
+uv run olf infra source bind open_food_facts --stage prod -f openlakeforge.yaml \
+  --set base_url=https://world.openfoodfacts.org \
+  --set user_agent="acme-lakehouse/0.1 (+https://github.com/OpenLakeForge/acme-lakehouse)" \
+  --set country=belgium
 ```
 
 RNAcentral publishes one read-only identity for its public database
 (<https://rnacentral.org/help/public-database>). It still goes through a Secret
-per stage, like any credential. Repeat these two commands for `olf-prod`:
+per stage, like any credential, so it is read from the environment, never
+passed on the command line. Export `RNACENTRAL_USERNAME` and
+`RNACENTRAL_PASSWORD` with the values from that page, then bind each stage:
 
 ```bash
-kubectl -n olf-dev create configmap olf-source-rnacentral \
-  --from-literal=host=hh-pgsql-public.ebi.ac.uk --from-literal=port=5432 --from-literal=database=pfmegrnargs
+for stage in dev prod; do
+  uv run olf infra source bind rnacentral --stage "$stage" -f openlakeforge.yaml \
+    --set host=hh-pgsql-public.ebi.ac.uk --set port=5432 --set database=pfmegrnargs \
+    --secret-from-env username=RNACENTRAL_USERNAME \
+    --secret-from-env password=RNACENTRAL_PASSWORD
+done
 ```
 
+Check what each stage has bound. The output names keys only, never values,
+and the command exits 1 while a key is missing:
+
 ```bash
-kubectl -n olf-dev create secret generic olf-source-rnacentral-credentials \
-  --from-literal=username=<user from the RNAcentral page> --from-literal=password=<password from the RNAcentral page>
+uv run olf infra source bindings --stage dev -f openlakeforge.yaml
+uv run olf infra source bindings --stage prod -f openlakeforge.yaml
 ```
 
 Activation refuses a revision in a stage that has not bound every key
@@ -116,13 +130,19 @@ uv run olf check contracts --repo-root .
 ```
 
 The tests run each connector through the platform's own Bronze loader
-(`libs.bronze_dlt`, from the pinned OpenLakeForge distribution) against
+(`openlakeforge_runtime.bronze_dlt`, from the pinned `openlakeforge-runtime`
+package) against
 controlled servers. They need no network. They cover the first load, a run
 with no change, changed rows, a killed run, the page budget,
 and DEV/PROD isolation.
 
-`openlakeforge` is pinned to an exact platform commit in `pyproject.toml`
-until the load modes ship in a published release.
+`openlakeforge`, `openlakeforge-core` and `openlakeforge-runtime` are pinned
+to one exact platform commit in `pyproject.toml` until `openlakeforge-runtime`
+ships in a published release.
+
+Python packages the project code needs beyond the platform's own go in
+`lakehouse_code/requirements.txt`. The project-code image installs them held to
+the platform's pins, and `olf check project-code` fails on a conflict.
 
 ## Data terms
 

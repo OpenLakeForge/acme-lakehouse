@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pytest
 import sqlalchemy as sa
+from openlakeforge_runtime.bronze_dlt import load_dlt_source
 
 from conftest import LAKEHOUSE_CODE, bronze_files, bronze_rows
 from lakehouse_code.bronze.rnacentral.dlt import rnacentral as rnacentral_module
 from lakehouse_code.bronze.rnacentral.dlt.rnacentral import rnacentral
-from libs.bronze_dlt import load_dlt_source
 
 
 @pytest.fixture

@@ -1,16 +1,14 @@
 """Run the connectors through the platform's own Bronze loader, offline.
 
-The loader (`libs.bronze_dlt`) ships in the OpenLakeForge distribution, not in
-this repository, exactly as it does in the project-code image. It is appended
-to the path after this repository so `lakehouse_code` stays ours and never the
-distribution's demo project.
+The loader (`openlakeforge_runtime.bronze_dlt`) comes from the
+`openlakeforge-runtime` package, pinned in `pyproject.toml`, exactly as the
+project-code image installs it.
 """
 
 from __future__ import annotations
 
 import json
 import os
-import sys
 import threading
 from collections.abc import Iterator
 from dataclasses import dataclass, field
@@ -20,16 +18,8 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 import pytest
-from olf.common.distribution import runtime_layout
 
-ROOT = Path(__file__).resolve().parents[1]
-# olf verifies its installed payload file by file: a __pycache__ written into
-# it by importing `libs` here would make every later olf command refuse it.
-sys.dont_write_bytecode = True
-sys.path.insert(0, str(ROOT))
-sys.path.append(str(runtime_layout({**os.environ, "OLF_DISTRIBUTION_MODE": "installed"}).distribution_root))
-
-LAKEHOUSE_CODE = ROOT / "lakehouse_code"
+LAKEHOUSE_CODE = Path(__file__).resolve().parents[1] / "lakehouse_code"
 
 
 @dataclass
