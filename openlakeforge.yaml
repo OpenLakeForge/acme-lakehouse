@@ -26,4 +26,4 @@ spec:
       source_egress:
         ports: [443, 5432]
   access:
-    issuer: none
+    tls: none
