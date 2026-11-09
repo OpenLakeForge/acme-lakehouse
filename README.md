@@ -129,6 +129,10 @@ uv run olf project validate --project .
 uv run olf check contracts --repo-root .
 ```
 
+```bash
+uv run olf check project-code --repo-root .
+```
+
 The tests run each connector through the platform's own Bronze loader
 (`openlakeforge_runtime.bronze_dlt`, from the pinned `openlakeforge-runtime`
 package) against
@@ -138,7 +142,8 @@ and DEV/PROD isolation.
 
 `openlakeforge`, `openlakeforge-core` and `openlakeforge-runtime` are pinned
 to one exact platform commit in `pyproject.toml` until `openlakeforge-runtime`
-ships in a published release.
+ships in a published release. After moving the pin, run `uv run olf project migrate`
+to bring the descriptors to the formats that commit reads.
 
 Python packages the project code needs beyond the platform's own go in
 `lakehouse_code/requirements.txt`. The project-code image installs them held to
