@@ -15,7 +15,7 @@ select
     end as length_band,
     md5,
     created_at
-from {{ source('silver', 'sequences') }}
+from {{ source('rna', 'sequences') }}
 {% if is_incremental() %}
 where id > (select coalesce(max(id), 0) from {{ this }})
 {% endif %}

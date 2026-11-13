@@ -7,4 +7,4 @@ select
     num_sequences,
     num_organisms,
     last_import_date
-from {{ source('silver', 'expert_databases') }}
+from {{ source('rna', 'expert_databases') }}

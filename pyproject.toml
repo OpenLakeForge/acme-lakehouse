@@ -7,9 +7,10 @@ dependencies = []
 
 [dependency-groups]
 dev = [
-  "openlakeforge",
-  "openlakeforge-core",
-  "openlakeforge-runtime",
+  # The OpenLakeForge release this project targets. Keep the three versions equal.
+  "openlakeforge==0.6.0a2",
+  "openlakeforge-core==0.6.0a2",
+  "openlakeforge-runtime==0.6.0a2",
   # The connectors' own dependency set, as the project-code image installs it.
   "dlt[parquet]==1.29.0",
   "boto3",
@@ -21,15 +22,6 @@ dev = [
 
 [tool.uv]
 package = false
-
-# Pinned to an exact platform commit until openlakeforge-runtime ships in a
-# published release; then pin the PyPI versions instead. Keep the three revs equal.
-# Currently openlakeforge main (7484c17, the unreleased v0.6 descriptor formats:
-# governance.yml v1beta2, source.yaml v1beta1, spec.access.tls).
-[tool.uv.sources]
-openlakeforge = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "7484c17c405380820a8aa7cc77e7eef425c55e7c", subdirectory = "tools/olf" }
-openlakeforge-core = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "7484c17c405380820a8aa7cc77e7eef425c55e7c", subdirectory = "packages/core" }
-openlakeforge-runtime = { git = "https://github.com/OpenLakeForge/openlakeforge", rev = "7484c17c405380820a8aa7cc77e7eef425c55e7c", subdirectory = "packages/runtime" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
