@@ -1,4 +1,5 @@
-name: "rna"
+name: "food"
+entities: "contracts/*.yml"
 # Reads only the Bronze files no earlier run read, and merges their rows on
 # the entity's primary key. An entity fed by a full resource overrides this.
 defaults:
@@ -7,10 +8,10 @@ defaults:
     write_mode: "merge_scd1"
     accepted:
       format: "iceberg"
-      path: "rna/{{entity.name}}"
+      path: "food/{{entity.name}}"
       storage: "lakehouse_silver"
-      iceberg: { catalog: "iceberg_catalog", namespace: "rna_silver" }
-    rejected: { format: "csv", path: "floe/rejected/rna/{{entity.name}}", storage: "lakehouse_silver" }
+      iceberg: { catalog: "iceberg_catalog", namespace: "food_silver" }
+    rejected: { format: "csv", path: "floe/rejected/food/{{entity.name}}", storage: "lakehouse_silver" }
   policy: { severity: "reject" }
   schema:
     normalize_columns: { enabled: true, strategy: "snake_case" }
