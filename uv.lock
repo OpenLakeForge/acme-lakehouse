@@ -26,9 +26,9 @@ dev = [
 dev = [
     { name = "boto3" },
     { name = "dlt", extras = ["parquet"], specifier = "==1.29.0" },
-    { name = "openlakeforge", specifier = "==0.6.0a2" },
-    { name = "openlakeforge-core", specifier = "==0.6.0a2" },
-    { name = "openlakeforge-runtime", specifier = "==0.6.0a2" },
+    { name = "openlakeforge", specifier = "==0.6.0a3" },
+    { name = "openlakeforge-core", specifier = "==0.6.0a3" },
+    { name = "openlakeforge-runtime", specifier = "==0.6.0a3" },
     { name = "psycopg2-binary" },
     { name = "pytest", specifier = ">=8" },
     { name = "ruff", specifier = ">=0.6" },
@@ -524,7 +524,7 @@ wheels = [
 
 [[package]]
 name = "openlakeforge"
-version = "0.6.0a2"
+version = "0.6.0a3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-identity" },
@@ -541,47 +541,47 @@ dependencies = [
     { name = "requests" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/a9/b5b7f4947c7e0fd846e1c57a003479ef40b9281a97f7ef8fca39aba81f55/openlakeforge-0.6.0a2.tar.gz", hash = "sha256:67fefda0b188aef89fab45843fd1d98d51654f00c2c5858bca260b42368eccd8", size = 1067196, upload-time = "2026-11-12T22:00:36.384Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/df/777b86199d12b7334ba882b40a902d50acf35fe678254457f33249e3dbc8/openlakeforge-0.6.0a3.tar.gz", hash = "sha256:7903fa9e4385c855a884ce0277f2fdaaf458fe5078bef6f67c763c297a3069eb", size = 1067358, upload-time = "2026-11-13T15:17:12.013Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/33/add00743b0a98530e0b4e4c45ce2013bd5eedda1bdff8af1b250e1af4b15/openlakeforge-0.6.0a2-py3-none-any.whl", hash = "sha256:c650f3874f73bd0e2b508f009553d3a6bfdde2d1434a307a3f01e8f326be1de0", size = 1204033, upload-time = "2026-11-12T22:00:34.407Z" },
+    { url = "https://files.pythonhosted.org/packages/93/ac/eb944fba76678cacfa095761db22f8588adad78eaa03be56d708b34401b3/openlakeforge-0.6.0a3-py3-none-any.whl", hash = "sha256:37823b29d99e474890311a6fcac7287b82ba6e2d12b2b5441147a19081c9461c", size = 1204375, upload-time = "2026-11-13T15:17:10.271Z" },
 ]
 
 [[package]]
 name = "openlakeforge-core"
-version = "0.6.0a2"
+version = "0.6.0a3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/13/ed/dce6adb39113621342ecfbcda669ee902534bd8f071e7482fb49354d0e5a/openlakeforge_core-0.6.0a2.tar.gz", hash = "sha256:ac72949cba343f2e9bba7b913e3f0ff2b4f6ec479db9d3794af1d4117bb5af50", size = 11460, upload-time = "2026-11-12T22:00:03.967Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/79/bf/ff387572670468853668c6a3af5988962bad3d312031b26b82b1a51db876/openlakeforge_core-0.6.0a3.tar.gz", hash = "sha256:e841f6e58921eb66b66f976a6740e38f2b5a1f33f2b67b01f847ea4d26afefe0", size = 11431, upload-time = "2026-11-13T15:16:43.356Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a7/33/de4a7db21d71486cdcf488aeb9c65bb8fc68b0a4eb73b61d942cdc2b00f7/openlakeforge_core-0.6.0a2-py3-none-any.whl", hash = "sha256:52133d64fd9adaea0130f05445fbad4eadefb8c025896e69b3781917daf981a8", size = 13699, upload-time = "2026-11-12T22:00:02.01Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/d0/a37ff1af361b2ed1357c5792e15e2261c9e19b00a05320c1377e38d1c7b5/openlakeforge_core-0.6.0a3-py3-none-any.whl", hash = "sha256:f75aed1b3cdbb80bc13b789b24a03a0e409eb613eda5205fe699d07277df0d0e", size = 13680, upload-time = "2026-11-13T15:16:42.278Z" },
 ]
 
 [[package]]
 name = "openlakeforge-lakehouse-services"
-version = "0.6.0a2"
+version = "0.6.0a3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "openlakeforge-core" },
     { name = "pyyaml" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/01/b5/87e4892f1892956b09a2b6a2472adbd0a5bda26ab5f63f75f52ae5776577/openlakeforge_lakehouse_services-0.6.0a2.tar.gz", hash = "sha256:9f85417bb680fbe6182ec2f57b378db314bd75a8b0ffd3f5be6d5ed669d90c86", size = 29163, upload-time = "2026-11-12T22:00:08.623Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/72/473a774d2024e174bfaa8b730b204b37f36b2b581865b0e428428a4e7eaa/openlakeforge_lakehouse_services-0.6.0a3.tar.gz", hash = "sha256:1573ba3de0fb100fb23f50b0756cef7b8e3241275b3cd7ff883609f738264d20", size = 29135, upload-time = "2026-11-13T15:16:40.11Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8b/c3/41b6a7076a55f9c7569a328c50ca24991c5ce083c77c418494d250cb94c7/openlakeforge_lakehouse_services-0.6.0a2-py3-none-any.whl", hash = "sha256:5057185e7100682a68aad223616d0a6c70bb04654dc6c016bafaabb2bf12c763", size = 34144, upload-time = "2026-11-12T22:00:07.177Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/ef/406acb5ce92a1dae5b353204336d58c65e7aeba60b5f105d93422f37e75c/openlakeforge_lakehouse_services-0.6.0a3-py3-none-any.whl", hash = "sha256:f458966963828aec83bd6241ab7ade342f354d4eb5c82dec4d83dceef3454845", size = 34141, upload-time = "2026-11-13T15:16:38.874Z" },
 ]
 
 [[package]]
 name = "openlakeforge-runtime"
-version = "0.6.0a2"
+version = "0.6.0a3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "openlakeforge-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b1/a2/ec045404db1dd6421a0b3a73375dd7398395c8c240a4bb35665119c05319/openlakeforge_runtime-0.6.0a2.tar.gz", hash = "sha256:21c654b05e36290e096caa6fbd4a4efb3a9518190e64a4420ca898770e93fe3c", size = 33414, upload-time = "2026-11-12T22:00:08.314Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/33/02/cfd563f330de50b568f4656da4c6db4a28103d3744b3b248f2100c5580e0/openlakeforge_runtime-0.6.0a3.tar.gz", hash = "sha256:6dab30ab6edfc3b7df171bd5707a1de425d7f53e5a92b7ae4a5652939d4a16a3", size = 33407, upload-time = "2026-11-13T15:16:41.694Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5e/a3/244f16bbf938bf49b9fe4938ac4885955200a7dbf9337ff6bfde60a0b181/openlakeforge_runtime-0.6.0a2-py3-none-any.whl", hash = "sha256:310c311ffcc1d29c32ecb583ecf2525edb56bdf407bba3435d547e09c9a5b163", size = 40785, upload-time = "2026-11-12T22:00:07.014Z" },
+    { url = "https://files.pythonhosted.org/packages/7a/e9/ea2c9b4d398fe2835ce556806d74978d4dfffd934267fecd98c74dd7ea20/openlakeforge_runtime-0.6.0a3-py3-none-any.whl", hash = "sha256:e89b6b3f696f77cab9dbe162a834174caa45273c0374ff6300a8825ca89c7c48", size = 40789, upload-time = "2026-11-13T15:16:40.629Z" },
 ]
 
 [[package]]
