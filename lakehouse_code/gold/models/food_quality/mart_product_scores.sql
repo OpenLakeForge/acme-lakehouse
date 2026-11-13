@@ -19,7 +19,7 @@ select
     end as sugar_level,
     last_modified_t,
     last_modified_at
-from {{ source('silver', 'products') }}
+from {{ source('food', 'products') }}
 {% if is_incremental() %}
 where last_modified_t > (select coalesce(max(last_modified_t), 0) from {{ this }})
 {% endif %}

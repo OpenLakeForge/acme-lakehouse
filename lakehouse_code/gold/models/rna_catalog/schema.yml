@@ -1,5 +1,10 @@
 version: 2
 
+groups:
+  - name: rna_catalog
+    owner:
+      name: rna_catalog
+
 models:
   - name: mart_sequence_index
     description: One row per RNAcentral sequence loaded so far, with its length band.

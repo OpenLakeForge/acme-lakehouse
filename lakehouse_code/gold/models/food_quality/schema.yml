@@ -1,5 +1,10 @@
 version: 2
 
+groups:
+  - name: food_quality
+    owner:
+      name: food_quality
+
 models:
   - name: mart_product_scores
     description: One row per product with its Nutri-Score, NOVA group and sugar level.

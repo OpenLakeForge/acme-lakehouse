@@ -1,10 +1,10 @@
 version: 2
 
 sources:
-  - name: silver
+  - name: food
     database: "{{ env_var('OPENLAKEFORGE_CATALOG_NAME') }}"
     schema: "{{ env_var('OPENLAKEFORGE_CATALOG_SCHEMA_PREFIX', '') }}food_silver"
-    description: Floe-owned Food Silver Iceberg tables.
+    description: The food domain's Floe-owned Silver Iceberg tables.
     tables:
       - name: products
         description: Validated Open Food Facts products, merged on code.
