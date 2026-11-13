@@ -42,8 +42,12 @@ limits are documented once, in the platform's
 | `openlakeforge.yaml` | Deployment Profile: local provider, Slim preset, DEV and PROD stages |
 | `lakehouse_code/governance.yml` | Domains and the products they own |
 | `lakehouse_code/bronze/<source>/` | `source.yaml` (load modes, runtime keys) and the dlt connector |
-| `lakehouse_code/silver/<domain>/contracts/floe/` | Floe contracts: `incremental_mode: file` with `merge_scd1`, or `overwrite` |
-| `lakehouse_code/gold/<product>/dbt/` | dbt projects with incremental `merge` models |
+| `lakehouse_code/silver/floe.yml`, `lakehouse_code/silver/sources.yml` | The Floe project and the Bronze sources it reads |
+| `lakehouse_code/silver/<domain>/contracts/` | `domain.yml` and one Floe contract per entity: `incremental_mode: file` with `merge_scd1`, or `overwrite` |
+| `lakehouse_code/gold/` | The Gold dbt project: shared `dbt_project.yml`, `packages.yml` and `macros/` |
+| `lakehouse_code/gold/models/_sources/<domain>.yml` | Each domain's Silver tables, as a dbt source named after the domain |
+| `lakehouse_code/gold/models/<product>/` | A product's models, in schema `<product>_gold`, with incremental `merge` models |
+| `lakehouse_code/dashboards/superset/<dashboard>/` | Superset report bundle |
 | `lakehouse_code/pipelines/dagster/` | One Dagster product job per Gold product |
 | `tests/` | Offline extractor tests against a controlled HTTP server and a temporary database |
 
@@ -130,6 +134,10 @@ uv run olf check contracts --repo-root .
 ```
 
 ```bash
+uv run olf check dbt --repo-root .
+```
+
+```bash
 uv run olf check project-code --repo-root .
 ```
 
@@ -141,9 +149,12 @@ with no change, changed rows, a killed run, the page budget,
 and DEV/PROD isolation.
 
 `openlakeforge`, `openlakeforge-core` and `openlakeforge-runtime` are pinned
-to one exact platform commit in `pyproject.toml` until `openlakeforge-runtime`
-ships in a published release. After moving the pin, run `uv run olf project migrate`
-to bring the descriptors to the formats that commit reads.
+to one OpenLakeForge release from PyPI in `pyproject.toml` (currently
+`0.6.0a2`, tag `v0.6.0-alpha.2`); keep the three versions equal. After moving
+the pin, run `uv run olf project migrate` to bring the descriptors to the
+formats that release reads, and apply the layout moves the release's
+[CHANGELOG](https://github.com/OpenLakeForge/openlakeforge/blob/main/CHANGELOG.md)
+lists under Migration; `olf check` names any file still in the old place.
 
 Python packages the project code needs beyond the platform's own go in
 `lakehouse_code/requirements.txt`. The project-code image installs them held to
