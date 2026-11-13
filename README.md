@@ -151,7 +151,7 @@ and DEV/PROD isolation.
 
 `openlakeforge`, `openlakeforge-core` and `openlakeforge-runtime` are pinned
 to one OpenLakeForge release from PyPI in `pyproject.toml` (currently
-`0.6.0a2`, tag `v0.6.0-alpha.2`); keep the three versions equal. After moving
+`0.6.0a3`, tag `v0.6.0-alpha.3`); keep the three versions equal. After moving
 the pin, run `uv run olf project migrate` to bring the descriptors to the
 formats that release reads, and apply the layout moves the release's
 [CHANGELOG](https://github.com/OpenLakeForge/openlakeforge/blob/main/CHANGELOG.md)
