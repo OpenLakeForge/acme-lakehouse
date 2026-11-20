@@ -49,7 +49,7 @@ limits are documented once, in the platform's
 | `lakehouse_code/gold/models/_sources/<domain>.yml` | Each domain's Silver tables, as a dbt source named after the domain |
 | `lakehouse_code/gold/models/<product>/` | A product's models, in schema `<product>_gold`, with incremental `merge` models |
 | `lakehouse_code/dashboards/superset/<dashboard>/` | Superset report bundle |
-| `lakehouse_code/pipelines/dagster/` | One Dagster product job per Gold product |
+| `lakehouse_code/pipelines/` | The Dagster code location (`definitions.py`) and per-product overrides (`products.py`); one job per product in `governance.yml` |
 | `tests/` | Offline extractor tests against a controlled HTTP server and a temporary database |
 
 ## Stage bindings
