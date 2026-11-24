@@ -49,7 +49,7 @@ limits are documented once, in the platform's
 | `lakehouse_code/gold/models/_sources/<domain>.yml` | Each domain's Silver tables, as a dbt source named after the domain |
 | `lakehouse_code/gold/models/<product>/` | A product's models, in schema `<product>_gold`, with incremental `merge` models |
 | `lakehouse_code/dashboards/superset/<dashboard>/` | Superset report bundle |
-| `lakehouse_code/pipelines/dagster/` | One Dagster product job per Gold product |
+| `lakehouse_code/pipelines/` | The Dagster code location (`definitions.py`) and per-product overrides (`products.py`); one job per product in `governance.yml` |
 | `tests/` | Offline extractor tests against a controlled HTTP server and a temporary database |
 
 ## Stage bindings
@@ -151,7 +151,7 @@ and DEV/PROD isolation.
 
 `openlakeforge`, `openlakeforge-core` and `openlakeforge-runtime` are pinned
 to one OpenLakeForge release from PyPI in `pyproject.toml` (currently
-`0.6.0a3`, tag `v0.6.0-alpha.3`); keep the three versions equal. After moving
+`0.7.0b1`, tag `v0.7.0-beta.1`); keep the three versions equal. After moving
 the pin, run `uv run olf project migrate` to bring the descriptors to the
 formats that release reads, and apply the layout moves the release's
 [CHANGELOG](https://github.com/OpenLakeForge/openlakeforge/blob/main/CHANGELOG.md)
